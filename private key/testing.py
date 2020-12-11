@@ -21,3 +21,10 @@ key = "mehul"
 enc_msg = VignereCipher.encrypt(plaintext, key)
 dec_msg = VignereCipher.decrypt(enc_msg, key)
 print(plaintext, "=>", enc_msg, "=>",dec_msg)
+
+print("------Playfair Cipher:------")
+plaintext = "PASSIVE ATTACK IS STILL BAD"
+key = "PROGRAMMING"
+enc_msg = PlayfairCipher.encrypt(plaintext, key)
+dec_msg = PlayfairCipher.decrypt(enc_msg, key)
+print(plaintext, "=>", enc_msg, "=>",dec_msg)
