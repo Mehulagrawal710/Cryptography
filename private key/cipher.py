@@ -30,10 +30,66 @@ class CaesarCipher():
 		for key in range(26):
 			print("key({}): {}".format(key, CaesarCipher.decrypt(ciphertext, key)))
 
+class VernamCipher():
+	@staticmethod
+	def encrypt(plaintext, key):
+		if len(key)!=len(plaintext):
+			raise Exception("Key length should be same as of plaintext")
+		plaintext = plaintext.lower()
+		key = key.lower()
+		ciphertext = []
+		for i in range(len(plaintext)):
+			p = alph2idx[plaintext[i]]
+			k = alph2idx[key[i]]
+			c = p+k
+			if c >= 26: c -= 26
+			ciphertext.append(idx2alph[c])
+		return "".join(ciphertext)
 
-key = 10
-enc_msg = CaesarCipher.encrypt("mehul agrawal", key)
-dec_msg = CaesarCipher.decrypt(enc_msg, key)
-print(enc_msg, dec_msg)
-print()
-CaesarCipher.bruteForceAttack(enc_msg)
+	@staticmethod
+	def decrypt(ciphertext, key):
+		if len(key)!=len(ciphertext):
+			raise Exception("Key length should be same as of ciphertext")
+		key = key.lower()
+		plaintext = []
+		for i in range(len(ciphertext)):
+			c = alph2idx[ciphertext[i]]
+			k = alph2idx[key[i]]
+			p = c-k
+			if p < 0: p += 26
+			plaintext.append(idx2alph[p])
+		return "".join(plaintext)
+
+class VignereCipher():
+	@staticmethod
+	def generate_key(key, n):
+		m = len(key)
+		new_key = key*(n//m)
+		for i in range(n%m):
+			new_key += key[i]
+		return new_key
+
+	@staticmethod
+	def encrypt(plaintext, key):
+		plaintext = plaintext.lower()
+		key = key.lower()
+		key = VignereCipher.generate_key(key, len(plaintext))
+		ciphertext = []
+		for i in range(len(plaintext)):
+			p = alph2idx[plaintext[i]]
+			k = alph2idx[key[i]]
+			c = (p+k)%26
+			ciphertext.append(idx2alph[c])
+		return "".join(ciphertext)
+
+	@staticmethod
+	def decrypt(ciphertext, key):
+		key = key.lower()
+		key = VignereCipher.generate_key(key, len(ciphertext))
+		plaintext = []
+		for i in range(len(ciphertext)):
+			c = alph2idx[ciphertext[i]]
+			k = alph2idx[key[i]]
+			p = (c-k+26)%26
+			plaintext.append(idx2alph[p])
+		return "".join(plaintext)
