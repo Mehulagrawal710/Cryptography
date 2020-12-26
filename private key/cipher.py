@@ -1,3 +1,5 @@
+from helper import *
+
 idx2alph = {i: chr(ord('a')+i) for i in range(26)}
 alph2idx = {y: x for x, y in idx2alph.items()}
 
@@ -27,6 +29,7 @@ class CaesarCipher():
 
 	@staticmethod
 	def bruteForceAttack(ciphertext):
+		ciphertext = ciphertext.lower()
 		for key in range(26):
 			print("key({}): {}".format(key, CaesarCipher.decrypt(ciphertext, key)))
 
@@ -92,6 +95,23 @@ class VignereCipher():
 			k = alph2idx[key[i]]
 			p = (c-k+26)%26
 			plaintext.append(idx2alph[p])
+		return "".join(plaintext)
+
+class MonoAlphabeticCipher():
+	@staticmethod
+	def encrypt(plaintext, mapping):
+		ciphertext = []
+		for words in plaintext.split():
+			for letter in words:
+				ciphertext.append(mapping[letter])
+		return "".join(ciphertext)
+
+	@staticmethod
+	def decrypt(ciphertext, mapping):
+		rev_mapping = {v: k for k, v in mapping.items()}
+		plaintext = []
+		for letter in ciphertext:
+				plaintext.append(rev_mapping[letter])
 		return "".join(plaintext)
 
 class PlayfairCipher():
@@ -181,3 +201,46 @@ class PlayfairCipher():
 				plnt = keymatrix[r1][c2] + keymatrix[r2][c1]
 			plaintext.append(plnt)
 		return "".join(plaintext)
+
+# class HillCipher():
+# 	@staticmethod
+# 	def encrypt(plaintext, key):
+# 		m = len(key)
+# 		plaintext = plaintext.lower()
+# 		key = numpy.array(key)
+# 		print("key:")
+# 		print(key)
+# 		ciphertext = []
+# 		for i in range(len(plaintext)//m):
+# 			p_vec = numpy.zeros(shape=(1,m))
+# 			for j in range(m):
+# 				p_vec[0][j] = alph2idx[plaintext[m*i+j]]
+# 			print("p vec=>", p_vec)
+# 			c_vec = numpy.dot(p_vec, key)
+# 			print("c vec=>", c_vec, end = ", ")
+# 			c_vec = c_vec%26
+# 			print(c_vec)
+# 			for x in c_vec[0]:
+# 				ciphertext.append(idx2alph[x])
+# 		return "".join(ciphertext)
+
+# 	@staticmethod
+# 	def decrypt(ciphertext, key):
+# 		m = len(key)
+# 		key = modMatInv(key, 26)
+# 		print("key:")
+# 		print(key)
+# 		plaintext = []
+# 		for i in range(len(ciphertext)//m):
+# 			c_vec = numpy.zeros(shape=(1,m))
+# 			for j in range(m):
+# 				c_vec[0][j] = alph2idx[ciphertext[m*i+j]]
+# 			print("c vec=>", c_vec)
+# 			p_vec = numpy.dot(c_vec, key)
+# 			print("p vec=>", p_vec, end = ", ")
+# 			p_vec = c_vec%26
+# 			print(p_vec)
+# 			for x in p_vec[0]:
+# 				plaintext.append(idx2alph[x])
+# 		return "".join(plaintext)
+
