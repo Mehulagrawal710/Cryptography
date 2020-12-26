@@ -1,3 +1,4 @@
+import math
 from helper import *
 
 idx2alph = {i: chr(ord('a')+i) for i in range(26)}
@@ -33,36 +34,24 @@ class CaesarCipher():
 		for key in range(26):
 			print("key({}): {}".format(key, CaesarCipher.decrypt(ciphertext, key)))
 
-class VernamCipher():
+class MonoAlphabeticCipher():
 	@staticmethod
-	def encrypt(plaintext, key):
-		if len(key)!=len(plaintext):
-			raise Exception("Key length should be same as of plaintext")
-		plaintext = plaintext.lower()
-		key = key.lower()
+	def encrypt(plaintext, mapping):
 		ciphertext = []
-		for i in range(len(plaintext)):
-			p = alph2idx[plaintext[i]]
-			k = alph2idx[key[i]]
-			c = p+k
-			if c >= 26: c -= 26
-			ciphertext.append(idx2alph[c])
+		for words in plaintext.split():
+			for letter in words:
+				ciphertext.append(mapping[letter])
 		return "".join(ciphertext)
 
 	@staticmethod
-	def decrypt(ciphertext, key):
-		if len(key)!=len(ciphertext):
-			raise Exception("Key length should be same as of ciphertext")
-		key = key.lower()
+	def decrypt(ciphertext, mapping):
+		rev_mapping = {v: k for k, v in mapping.items()}
 		plaintext = []
-		for i in range(len(ciphertext)):
-			c = alph2idx[ciphertext[i]]
-			k = alph2idx[key[i]]
-			p = c-k
-			if p < 0: p += 26
-			plaintext.append(idx2alph[p])
+		for letter in ciphertext:
+				plaintext.append(rev_mapping[letter])
 		return "".join(plaintext)
 
+#polyalphabetic
 class VignereCipher():
 	@staticmethod
 	def generateKey(key, n):
@@ -95,23 +84,6 @@ class VignereCipher():
 			k = alph2idx[key[i]]
 			p = (c-k+26)%26
 			plaintext.append(idx2alph[p])
-		return "".join(plaintext)
-
-class MonoAlphabeticCipher():
-	@staticmethod
-	def encrypt(plaintext, mapping):
-		ciphertext = []
-		for words in plaintext.split():
-			for letter in words:
-				ciphertext.append(mapping[letter])
-		return "".join(ciphertext)
-
-	@staticmethod
-	def decrypt(ciphertext, mapping):
-		rev_mapping = {v: k for k, v in mapping.items()}
-		plaintext = []
-		for letter in ciphertext:
-				plaintext.append(rev_mapping[letter])
 		return "".join(plaintext)
 
 class PlayfairCipher():
@@ -244,3 +216,67 @@ class PlayfairCipher():
 # 				plaintext.append(idx2alph[x])
 # 		return "".join(plaintext)
 
+
+# Transposition Techniques
+class RailFenceCipher():
+	@staticmethod
+	def encrypt(plaintext, depth):
+		plaintext = plaintext.lower()
+		plaintext = "".join(plaintext.split())
+		n = len(plaintext)
+		ciphertext = []
+		for d in range(depth):
+			for i in range(math.ceil(n/depth)):
+				if i*depth+d < n:
+					ciphertext.append(plaintext[i*depth+d])
+		return "".join(ciphertext)
+
+	@staticmethod
+	def decrypt(ciphertext, depth):
+		n = len(ciphertext)
+		plaintext = []
+		c = math.ceil(n/depth)
+		for i in range(c):
+			for d in range(depth):
+				if d*c+i < n:
+					plaintext.append(ciphertext[d*c+i])
+		return "".join(plaintext)
+
+class ColumnarCipher():
+	@staticmethod
+	def encrypt(plaintext, key):
+		pass
+
+	@staticmethod
+	def decrypt(ciphertext, key):
+		pass
+
+class VernamCipher():
+	@staticmethod
+	def encrypt(plaintext, key):
+		if len(key)!=len(plaintext):
+			raise Exception("Key length should be same as of plaintext")
+		plaintext = plaintext.lower()
+		key = key.lower()
+		ciphertext = []
+		for i in range(len(plaintext)):
+			p = alph2idx[plaintext[i]]
+			k = alph2idx[key[i]]
+			c = p+k
+			if c >= 26: c -= 26
+			ciphertext.append(idx2alph[c])
+		return "".join(ciphertext)
+
+	@staticmethod
+	def decrypt(ciphertext, key):
+		if len(key)!=len(ciphertext):
+			raise Exception("Key length should be same as of ciphertext")
+		key = key.lower()
+		plaintext = []
+		for i in range(len(ciphertext)):
+			c = alph2idx[ciphertext[i]]
+			k = alph2idx[key[i]]
+			p = c-k
+			if p < 0: p += 26
+			plaintext.append(idx2alph[p])
+		return "".join(plaintext)

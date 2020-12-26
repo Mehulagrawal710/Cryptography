@@ -8,20 +8,6 @@ dec_msg = CaesarCipher.decrypt(enc_msg, key)
 print(plaintext, "=>", enc_msg, "=>",dec_msg)
 CaesarCipher.bruteForceAttack(enc_msg)
 
-print("------Vernam Cipher:------")
-plaintext = "Mehul"
-key = "hello"
-enc_msg = VernamCipher.encrypt(plaintext, key)
-dec_msg = VernamCipher.decrypt(enc_msg, key)
-print(plaintext, "=>", enc_msg, "=>",dec_msg)
-
-print("------Vignere Cipher:------")
-plaintext = "VignereCipher"
-key = "mehul"
-enc_msg = VignereCipher.encrypt(plaintext, key)
-dec_msg = VignereCipher.decrypt(enc_msg, key)
-print(plaintext, "=>", enc_msg, "=>",dec_msg)
-
 print("------MonoAlphabeticCipher Cipher:------")
 plaintext = "it was disclosed yesterday that several informal but direct contacts have been made with political representatives of the viet cong in moscow"
 key = {
@@ -55,6 +41,13 @@ enc_msg = MonoAlphabeticCipher.encrypt(plaintext, key)
 dec_msg = MonoAlphabeticCipher.decrypt(enc_msg, key)
 print(plaintext, "=>", enc_msg, "=>",dec_msg)
 
+print("------Vignere Cipher:------")
+plaintext = "VignereCipher"
+key = "mehul"
+enc_msg = VignereCipher.encrypt(plaintext, key)
+dec_msg = VignereCipher.decrypt(enc_msg, key)
+print(plaintext, "=>", enc_msg, "=>",dec_msg)
+
 print("------Playfair Cipher:------")
 plaintext = "PASSIVE ATTACK IS STILL BAD"
 key = "PROGRAMMING"
@@ -71,3 +64,25 @@ print(plaintext, "=>", enc_msg, "=>",dec_msg)
 # dec_msg = HillCipher.decrypt(enc_msg, key)
 # print(plaintext, "=>", enc_msg, "=>",dec_msg)
 
+
+# transposition techniques
+print("------RailFence Cipher:------")
+plaintext = "Come Home Tomorrow morning"
+depth = 2
+enc_msg = RailFenceCipher.encrypt(plaintext, depth)
+dec_msg = RailFenceCipher.decrypt(enc_msg, depth)
+print(plaintext, "=>", enc_msg, "=>",dec_msg)
+
+print("------Vernam Cipher:------")
+plaintext = "Mehul"
+key = "hello"
+enc_msg = VernamCipher.encrypt(plaintext, key)
+dec_msg = VernamCipher.decrypt(enc_msg, key)
+print(plaintext, "=>", enc_msg, "=>",dec_msg)
+
+print("------Vernam Cipher:------")
+plaintext = "Mehul"
+key = "hello"
+enc_msg = VernamCipher.encrypt(plaintext, key)
+dec_msg = VernamCipher.decrypt(enc_msg, key)
+print(plaintext, "=>", enc_msg, "=>",dec_msg)
